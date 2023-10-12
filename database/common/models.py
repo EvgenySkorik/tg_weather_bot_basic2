@@ -6,6 +6,8 @@ db = pw.SqliteDatabase('loging_base.db')
 
 
 class ModelBase(pw.Model):
+    """Класс для создания модели таблицы в БД"""
+
     created_at = pw.DateField(default=datetime.now())
 
     class Meta():

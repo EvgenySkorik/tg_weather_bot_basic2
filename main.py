@@ -2,8 +2,12 @@ import abc
 import requests
 import telebot
 import json
+from settings import SiteSettings
+tg = SiteSettings()
 
 bot = telebot.TeleBot('6351189777:AAFlSX8Yfd-6RSQD1SVhM1cRKiHfTFrvdC0')
+# bot = telebot.TeleBot(tg.tg_api)
+
 # API = '8a9ffc6457mshc1d2ca862369e02p15737cjsn490c2f4bc410'
 URL = 'https://open-weather13.p.rapidapi.com/city/'
 headers = {

@@ -9,11 +9,15 @@ T = TypeVar("T")
 
 
 def _store_date(db: db, model: T, *data: List[Dict]) -> None:
+    """Функция для сохранение данных в БД"""
+
     with db.atomic():
         model.insert_many(*data).execute()
 
 
 def _retrieve_all_data(db: db, model: T, *columns: ModelBase) -> ModelSelect:
+    """Функция для чтения данных из БД"""
+
     with db.atomic():
         response = model.select(*columns)
 
@@ -21,6 +25,7 @@ def _retrieve_all_data(db: db, model: T, *columns: ModelBase) -> ModelSelect:
 
 
 class CRUDInterface():
+    """Класс, который возвращает интерфейс объекта"""
     @staticmethod
     def create():
         return _store_date
