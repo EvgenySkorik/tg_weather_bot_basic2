@@ -11,4 +11,4 @@ class SiteSettings(BaseModel):
 
     api_key: SecretStr = os.getenv('SITE_API', None)
     host_api: StrictStr = os.getenv('HOST_API', None)
-    tg_api: SecretStr = os.getenv('TELEBOT_API', None)
+    tg_api: StrictStr = os.getenv('TELEBOT_API', None)

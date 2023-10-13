@@ -13,6 +13,7 @@ class ModelBase(pw.Model):
 
 
 class History(ModelBase):
+    user_name = pw.TextField()
     temp_now = pw.TextField()
     temp_like_now = pw.TextField()
 
