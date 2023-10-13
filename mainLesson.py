@@ -1,18 +1,19 @@
-import json
-import requests
-import telebot
-from settings import SiteSettings
-site = SiteSettings()
+from database.common.models import db, History
+from database.core import crud
+from SITE_API.core import headers, site_api, url
 
+print(url)
+db_write = crud.create()
+db_read = crud.retrieve()
 
-bot = telebot.TeleBot('6351189777:AAFlSX8Yfd-6RSQD1SVhM1cRKiHfTFrvdC0')
-URL = 'https://open-weather13.p.rapidapi.com/city/'
-headers = {
-    "X-RapidAPI-Key": site.api_key,
-    "X-RapidAPI-Host": site.host_api
-}
-
-
-res = requests.get(URL + 'moscow', headers=headers)
-data = json.loads(res.text)
+weather = site_api.get_response()
+response = weather(url, 'moscow', headers)
+print(response)
+data = [{'temp_now': response[0], 'temp_like_now': response[1]}]
 print(data)
+db_write(db, History, data)
+
+retrieved = db_read(db, History, History.temp_now, History.temp_like_now)
+
+for el in retrieved:
+    print(el.temp_now, el.temp_like_now)

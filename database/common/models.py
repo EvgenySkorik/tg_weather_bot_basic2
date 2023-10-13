@@ -1,13 +1,11 @@
 from datetime import datetime
-import peewee as pw
 
+import peewee as pw
 
 db = pw.SqliteDatabase('loging_base.db')
 
 
 class ModelBase(pw.Model):
-    """Класс для создания модели таблицы в БД"""
-
     created_at = pw.DateField(default=datetime.now())
 
     class Meta():
@@ -15,6 +13,6 @@ class ModelBase(pw.Model):
 
 
 class History(ModelBase):
-    number = pw.TextField()
-    message = pw.TextField()
-        
+    temp_now = pw.TextField()
+    temp_like_now = pw.TextField()
+
