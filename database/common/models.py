@@ -14,6 +14,8 @@ class ModelBase(pw.Model):
 
 class History(ModelBase):
     user_name = pw.TextField()
+    user_city = pw.TextField()
     temp_now = pw.TextField()
     temp_like_now = pw.TextField()
+    other = pw.TextField()
 
