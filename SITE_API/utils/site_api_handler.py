@@ -15,7 +15,8 @@ def _get_response(url: str, usr_city: str, headers):
         return far_to_cel(data.get('main', None).get('temp', None)), \
             far_to_cel(data.get('main', None).get('feels_like', None)), \
             far_to_cel(data.get('main', None).get('temp_min', None)), \
-            far_to_cel(data.get('main', None).get('temp_max', None))
+            far_to_cel(data.get('main', None).get('temp_max', None)), \
+            data.get('weather', None)[0].get('main', None)
 
 
 # def _get_response_5days(url: str, usr_city, headers):

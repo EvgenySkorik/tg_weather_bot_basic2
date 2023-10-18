@@ -40,7 +40,7 @@
 
 import requests
 
-url = "https://open-weather13.p.rapidapi.com/city/fivedaysforcast/55.7522/37.6156"
+url = "https://open-weather13.p.rapidapi.com/city/певек"
 
 headers = {
 	"X-RapidAPI-Key": "c631a4d29emshb66eb14026d7ad6p17b874jsn8f480c04f855",
@@ -49,6 +49,17 @@ headers = {
 
 response = requests.get(url, headers=headers)
 
-print(response.json())
+import pprint
 
-#обычный {'coord': {'lon': 37.6156, 'lat': 55.7522}, 'weather': [{'id': 804, 'main': 'Clouds', 'description': 'overcast clouds', 'icon': '04d'}], 'base': 'stations', 'main': {'temp': 43.18, 'feels_like': 41.68, 'temp_min': 41.56, 'temp_max': 44.46, 'pressure': 1002, 'humidity': 79, 'sea_level': 1002, 'grnd_level': 984}, 'visibility': 10000, 'wind': {'speed': 3.27, 'deg': 264, 'gust': 4.79}, 'clouds': {'all': 100}, 'dt': 1697464428, 'sys': {'type': 2, 'id': 2000314, 'country': 'RU', 'sunrise': 1697428864, 'sunset': 1697466541}, 'timezone': 10800, 'id': 524901, 'name': 'Moscow', 'cod': 200}
+# data = {'coord': {'lon': 37.6156, 'lat': 55.7522}, 'weather': [{'id': 500, 'main': 'Rain', 'description': 'light rain', 'icon': '10n'}], 'base': 'stations', 'main': {'temp': 39.49, 'feels_like': 31.39, 'temp_min': 38.55, 'temp_max': 40.01, 'pressure': 1005, 'humidity': 92, 'sea_level': 1005, 'grnd_level': 987}, 'visibility': 3611, 'wind': {'speed': 14.34, 'deg': 276, 'gust': 26.33}, 'rain': {'1h': 0.22}, 'clouds': {'all': 100}, 'dt': 1697567601, 'sys': {'type': 2, 'id': 2000314, 'country': 'RU', 'sunrise': 1697515386, 'sunset': 1697552793}, 'timezone': 10800, 'id': 524901, 'name': 'Moscow', 'cod': 200}
+# pprint.pprint(data)
+data = response.json()
+res = data.get('weather', None)[0].get('main', None)
+
+print(res)
+if 'Rain' in res:
+    print('Дождик')
+
+
+#Rain - дождь, Clouds - облачно, Clear - ясно,
+
