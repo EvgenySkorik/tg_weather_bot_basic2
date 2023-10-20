@@ -13,9 +13,9 @@ def _store_date(db: db, model: T, *data: List[Dict]) -> None:
         model.insert_many(*data).execute()
 
 
-def _retrieve_all_data(db: db, model: T, *columns: ModelBase) -> ModelSelect:
+def _retrieve_all_data(db: db, name: str, model: T, *columns: ModelBase) -> ModelSelect:
     with db.atomic():
-        response = model.select()
+        response = model.select().where(model.user_name == name)
 
     return response
 

@@ -52,7 +52,7 @@ def start(message):
         bot.send_message(message.chat.id, 'Напишите в каком городе хотите узнать максимальную температуру за сегодня:')
         bot.register_next_step_handler(message, get_weather_max)
     elif message.text == '/history':
-        bot.send_message(message.chat.id, '<b>Список запросов пользователя:</b>', parse_mode='html')
+        bot.send_message(message.chat.id, '<b>Ваши последние 10 запросов:</b>', parse_mode='html')
         history(message)
     else:
         bot.send_message(message.chat.id, 'Для того, чтобы повторить запрос воспользуйтесь кнопками или меню.')
@@ -128,11 +128,15 @@ def get_weather_max(message):
 def history(message):
     """Функция выводит пользователю в чат мессенджера историю запросов"""
     db_read = crud.retrieve()
+    print(message.from_user.username)
+    print(type(message.from_user.username))
 
-    retrieved = db_read(db, History, History.user_name, History.user_city, History.temp_now, History.temp_like_now,
-                        History.other)
+    retrieved = db_read(db, message.from_user.username, History, History.user_name, History.user_city, History.temp_now,
+                        History.temp_like_now, History.other)
 
-    for el in retrieved:
+    for idx, el in enumerate(reversed(retrieved)):
+        if idx == 10:
+            break
         bot.send_message(message.chat.id, f'{el.user_name, el.user_city, el.temp_now, el.temp_like_now, el.other}')
 
 
