@@ -7,6 +7,7 @@ from database.common.models import db, History
 from database.core import crud
 from SITE_API.core import headers, site_api, url
 
+
 tg_bot = SiteSettings()
 bot = telebot.TeleBot(tg_bot.tg_api)
 
@@ -15,6 +16,7 @@ db_read = crud.retrieve()
 
 ex1_type_err = 'Что-то не так!\n<b>Возможно, Вы ввели команду, вместо города или не существующий город!</b>\nВведите команду: /start '
 iter_foto = iter([1, 2, 3])
+iter_fact = iter([1, 2, 3])
 
 
 def generic_path() -> None:
@@ -22,8 +24,15 @@ def generic_path() -> None:
     cur_path = os.path.dirname(__file__)
     new_path = os.path.join(cur_path, 'foto_pct')
     foto_list: list = [os.path.join(new_path, i_file) for i_file in os.listdir(new_path)]
+    fact_list: list = ['Самая низкая температура в Москве за все время наблюдений – 17 июля 1940, было – 42,2 градуса',
+                       'В Берлине дождь идет в среднем 100 дней в году. В городе 175 музеев. Так что каждый дождливый день вы можете посещать разные музеи',
+                       'Самый холодный месяц в Москве – это февраль. Но, оказывается, что среднемесячная температура этого лютого месяца всего-то минус 6,7 градусов!',
+                       'В английском языке есть более 100 слов для обозначения дождя',
+                       'Минимальные месячные температуры в г. Казань наблюдались в январе 1891-го (-21 градус) и феврале 1954 года (-20 градусов)']
     global iter_foto
     iter_foto = iter(foto_list)
+    global iter_fact
+    iter_fact = iter(fact_list)
 
 
 generic_path()
@@ -128,8 +137,6 @@ def get_weather_max(message):
 def history(message):
     """Функция выводит пользователю в чат мессенджера историю запросов"""
     db_read = crud.retrieve()
-    print(message.from_user.username)
-    print(type(message.from_user.username))
 
     retrieved = db_read(db, message.from_user.username, History, History.user_name, History.user_city, History.temp_now,
                         History.temp_like_now, History.other)
@@ -140,10 +147,10 @@ def history(message):
         bot.send_message(message.chat.id, f'{el.user_name, el.user_city, el.temp_now, el.temp_like_now, el.other}')
 
 
-def get_foto(message, path):
+def get_foto(message, path, fact):
     '''Функция открывает фото по пути, отправляет фото в месенджер'''
     with open(path, 'rb') as f:
-        bot.send_message(message.chat.id, 'load foto....')
+        bot.send_message(message.chat.id, fact)
         bot.send_photo(message.chat.id, f)
 
 
@@ -158,9 +165,9 @@ def menu(message):
         info(message)
     elif message.text.lower() == 'погода в фотографиях':
         try:
-            get_foto(message, path=next(iter_foto))
-        except TimeoutError:
-            get_foto(message, path=next(iter_foto))
+            get_foto(message, path=next(iter_foto), fact=next(iter_fact))
+        except (TimeoutError, ConnectionError, ConnectionAbortedError, ConnectionAbortedError):
+            get_foto(message, path=next(iter_foto), fact=next(iter_fact))
         except StopIteration:
             generic_path()
     else:
@@ -168,6 +175,11 @@ def menu(message):
                                           f'кнопками или используйте команды из меню</b>', parse_mode='html')
 
 
-
-if __name__ == '__main__':
-    bot.polling(none_stop=True)
+while True:
+    try:
+        if __name__ == '__main__':
+            bot.polling(none_stop=True)
+    except:
+        continue
+# if __name__ == '__main__':
+#     bot.polling(none_stop=True)
