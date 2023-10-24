@@ -5,7 +5,7 @@ import os
 
 from database.common.models import db, History
 from database.core import crud
-from SITE_API.core import headers, site_api, url
+from site_api_weather.core import headers, site_api, url
 
 
 tg_bot = SiteSettings()
