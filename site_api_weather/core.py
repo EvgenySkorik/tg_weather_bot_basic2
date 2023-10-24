@@ -1,5 +1,5 @@
 from settings import SiteSettings
-from SITE_API.utils.site_api_handler import SiteApiInterface
+from site_api_weather.utils.site_api_handler import SiteApiInterface
 
 
 site = SiteSettings()

@@ -75,8 +75,7 @@ def info(message):
     bot.send_message(message.chat.id, '1. /start - запуск бота или возврат в основное меню')
     bot.send_message(message.chat.id, '2. /low - узнать минимальную температура за сегодня')
     bot.send_message(message.chat.id, '3. /high - узнать максимальную температура за сегодня')
-    bot.send_message(message.chat.id, '4. /custom - 2345')
-    bot.send_message(message.chat.id, '5. /history - Истоия запросов.')
+    bot.send_message(message.chat.id, '4. /history - Истоия запросов.')
 
 
 def emoji_determinant(responce: str) -> str:
