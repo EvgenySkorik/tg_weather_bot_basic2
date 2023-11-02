@@ -6,6 +6,8 @@ from tg_handler import TgInterface
 tg_bot = SiteSettings()
 bot = telebot.TeleBot(tg_bot.tg_api)
 func_handler = TgInterface()
+foto_fact: dict = func_handler.get_foto()
+foto_fact_it = iter(foto_fact.items())
 
 
 @bot.message_handler(commands=['start', 'low', 'high', 'custom', 'history'])
@@ -44,7 +46,7 @@ def start(message):
 
 @bot.message_handler(content_types=['text'])
 def menu(message):
-    '''Функция - обрабатывающая нажатие кнопок из меню'''
+    '''Функция - обрабатывающая нажатие кнопок из меню, обрабатывает итератор'''
 
     if message.text.lower() == 'узнать погоду в городе':
         bot.send_message(message.chat.id, 'Напишите в чат бота название города на англиском или русском языке')
@@ -52,7 +54,16 @@ def menu(message):
     elif message.text.lower() == 'информация по командам':
         func_handler.info(message)
     elif message.text.lower() == 'погода в фотографиях':
-        func_handler.get_foto(message)
+        global foto_fact_it
+        global foto_fact
+        try:
+            path = next(foto_fact_it)
+            with open(path[0], 'rb') as f:
+                bot.send_message(message.chat.id, path[1])
+                bot.send_photo(message.chat.id, f)
+        except Exception:
+            foto_fact_it = iter(foto_fact.items())
+
     else:
         bot.send_message(message.chat.id,
                          f'{message.from_user.first_name}, вы ввели: {message.text}, \n<b>Воспользуйтесь '
@@ -65,4 +76,3 @@ while True:
             bot.polling(none_stop=True)
     except:
         continue
-
